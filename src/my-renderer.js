@@ -14,10 +14,14 @@ const notRelevantConfig = {
 
 const hostConfig = {
   ...notRelevantConfig,
+  //Reconciler-ს ვეუბნებით როგორ რეჟიმი გამოიყენოს, DOM-ს მუტაცია შეგვიძლია და ამიტომ ვიყენებთ მუტაციურ რეჟიმს
   supportsMutation: true,
+  // ტექსტის ელემენტის შექმნა სხვადასხვა ჰოსთ გარემოში სხვადასხვანაირად ხდება, ამიტომ გვიწევს ამ ფუნცქიიც იმპლემებტაცია
   createTextInstance: (text) => {
     return document.createTextNode(text);
   },
+
+  //type ტიპის ელემენტის შექმნა
   createInstance: (
     type,
     props,
@@ -45,6 +49,8 @@ const hostConfig = {
     }
     return domElement;
   },
+
+  //შვილობილი ელემენტებზე პასუხებისმგებელი ფუნცქიები
   appendChildToContainer: (parent, child) => {
     parent.appendChild(child);
   },
@@ -54,6 +60,8 @@ const hostConfig = {
   appendChild(parent, child) {
     parent.appendChild(child);
   },
+
+  //წაშლაზე და ხეს რედაქტირებაზე პასუხისმგებელი ფუნქციები
   removeChildFromContainer(container, child) {
     container.removeChild(child);
   },
@@ -66,6 +74,8 @@ const hostConfig = {
   insertBefore(parent, child, before) {
     parent.insertBefore(child, before);
   },
+
+  // ელემენტის განახლებაზე პასუხისმგებელი ფუნქციები
   prepareUpdate(domElement, type, oldProps, newProps, root, host) {
     const res = {};
     if (oldProps.ფონი !== newProps.ფონი) {
@@ -79,6 +89,7 @@ const hostConfig = {
     return res;
   },
   commitUpdate(domElement, updatePayload, type, oldProps, newProps) {
+    //თუ განახლდა რომელიმე პარამეტრი მხოლოდ მაგ შემთხვევაში ვახდენთ მუტაციას
     if (updatePayload.ააფონი) {
       domElement.style.backgroundColor = updatePayload.ააფონი;
     }
@@ -90,7 +101,7 @@ const hostConfig = {
 
 const reconciler = ReactReconciler(hostConfig);
 
-export const MySuperRender = (reactElement, rootDiv) => {
+export const GerogianRenderer = (reactElement, rootDiv) => {
   //შევქმნათ საწყისი კონტეინერი
   const container = reconciler.createContainer(rootDiv, false, false);
   //დავააფდეითოთ საჭიროების შემთხევაში

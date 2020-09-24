@@ -2,8 +2,8 @@ import React from "react";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { MySuperRender } from "./my-renderer";
-MySuperRender(
+import { GerogianRenderer } from "./my-renderer";
+GerogianRenderer(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
