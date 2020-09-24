@@ -29,8 +29,11 @@ function App() {
   return (
     <div სტილები="App" onClick={handleLogoClick}>
       <header სტილები="App-header" ფონი={logoWasClicked && color}>
-        {logoWasClicked && <img სორსი={kanwi} სტილები="App-logo" alt="kanwi" />}
-        {!logoWasClicked && <img სორსი={logo} სტილები="App-logo" alt="logo" />}
+        <img
+          სორსი={logoWasClicked ? kanwi : logo}
+          სტილები="App-logo"
+          alt={logoWasClicked ? "kanwi" : "react-logo"}
+        />
       </header>
     </div>
   );
