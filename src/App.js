@@ -3,24 +3,10 @@ import logo from "./logo.svg";
 import kanwi from "./kanwi.png";
 import "./App.css";
 
-function useBoolean(defaultValue) {
-  const [value, setValue] = useState(defaultValue || false);
-  const setTrue = useCallback(() => {
-    setValue(true);
-  }, []);
-  const setFalse = useCallback(() => {
-    setValue(false);
-  }, []);
-  const switchValue = useCallback(() => {
-    setValue((c) => !c);
-  }, []);
-  return { value, setValue, setTrue, setFalse, switchValue };
-}
-
 const colors = ["red", "gray", "green", "yellow", "blue", "pink"];
 
 function App() {
-  const { value: logoWasClicked, setTrue: handleLogoClick } = useBoolean();
+  const [logoWasClicked, setLogoWasClicked] = useState(false);
   const [color, setColor] = useState();
 
   useEffect(() => {
@@ -34,15 +20,17 @@ function App() {
     return () => clearInterval(interval);
   }, [logoWasClicked]);
 
-  console.log(logoWasClicked);
+  const handleLogoClick = useCallback(() => {
+    if (!logoWasClicked) {
+      setLogoWasClicked(true);
+    }
+  }, [logoWasClicked]);
+
   return (
     <div სტილები="App" onClick={handleLogoClick}>
       <header სტილები="App-header" ფონი={logoWasClicked && color}>
-        <img
-          სორსი={logoWasClicked ? kanwi : logo}
-          სტილები="App-logo"
-          alt="logo"
-        />
+        {logoWasClicked && <img სორსი={kanwi} სტილები="App-logo" alt="kanwi" />}
+        {!logoWasClicked && <img სორსი={logo} სტილები="App-logo" alt="logo" />}
       </header>
     </div>
   );

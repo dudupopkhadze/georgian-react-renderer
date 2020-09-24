@@ -1,7 +1,23 @@
 import ReactReconciler from "react-reconciler";
 
+const defaultProps = ["alt", "className", "href", "rel", "src", "target"];
+
+const notRelevantConfig = {
+  finalizeInitialChildren: (domElement, type, props) => {},
+  commitTextUpdate(textInstance, oldText, newText) {},
+  getRootHostContext: () => {},
+  prepareForCommit: () => {},
+  resetAfterCommit: () => {},
+  getChildHostContext: () => {},
+  shouldSetTextContent: (type, props) => {},
+};
+
 const hostConfig = {
+  ...notRelevantConfig,
   supportsMutation: true,
+  createTextInstance: (text) => {
+    return document.createTextNode(text);
+  },
   createInstance: (
     type,
     props,
@@ -10,6 +26,11 @@ const hostConfig = {
     workInProgress
   ) => {
     const domElement = document.createElement(type);
+    defaultProps.forEach((e) => {
+      if (props[e]) {
+        domElement[e] = props[e];
+      }
+    });
     if (props.სტილები) {
       domElement.className = props.სტილები;
     }
@@ -24,9 +45,6 @@ const hostConfig = {
     }
     return domElement;
   },
-  createTextInstance: (text) => {
-    return document.createTextNode(text);
-  },
   appendChildToContainer: (parent, child) => {
     parent.appendChild(child);
   },
@@ -37,16 +55,16 @@ const hostConfig = {
     parent.appendChild(child);
   },
   removeChildFromContainer(container, child) {
-    // container.removeChild(child);
+    container.removeChild(child);
   },
   removeChild(parent, child) {
-    // parent.removeChild(child);
+    parent.removeChild(child);
   },
   insertInContainerBefore(container, child, before) {
-    // container.insertBefore(child, before);
+    container.insertBefore(child, before);
   },
   insertBefore(parent, child, before) {
-    // parent.insertBefore(child, before);
+    parent.insertBefore(child, before);
   },
   prepareUpdate(domElement, type, oldProps, newProps, root, host) {
     const res = {};
@@ -68,13 +86,6 @@ const hostConfig = {
       domElement.src = updatePayload.ასორსი;
     }
   },
-  finalizeInitialChildren: (domElement, type, props) => {},
-  commitTextUpdate(textInstance, oldText, newText) {},
-  getRootHostContext: () => {},
-  prepareForCommit: () => {},
-  resetAfterCommit: () => {},
-  getChildHostContext: () => {},
-  shouldSetTextContent: (type, props) => {},
 };
 
 const reconciler = ReactReconciler(hostConfig);
